@@ -1,0 +1,17 @@
+Prediction Made with CORNET:
+a Neural Network based method trained using Correlated Mutations,
+Sequence Conservation, Predicted Secondary structure of Proteins and
+Evolutionary Information.
+Authors Fariselli Piero, Olmea Osvaldo, Valencia Alfonso, Rita Casadio.
+This method is an extension of the two following methods
+
+Olmea O. and Valencia A. (1997) Fold. Des. 2: S25-32.
+
+Fariselli P and Casadio R. (1999) Prot. Engng 12:15-21
+
+#================================================================#
+
+PREDICTION
+
+Couple          Reliability
+i       j

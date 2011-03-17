@@ -1,0 +1,2 @@
+class DisorderValuesController < ApplicationController
+end

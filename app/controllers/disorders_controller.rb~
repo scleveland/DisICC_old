@@ -1,0 +1,46 @@
+class DisordersController < ApplicationController
+  def index
+    render :disorders =>'input'
+  end
+
+  def show_disorder(disorder_data)
+	@dis_data = disorder_data
+	render :disorders => 'show'	
+  end
+
+  def input
+    @sequence = Sequence.new		
+    respond_to do |format|
+			format.html # show.html.erb
+			format.xml  { render :xml => @sequence }
+		end
+    end
+  
+ def run_disorder
+    dis_sequence = params[:sequence]
+    # write a fasta file from the submitted sequence	
+    File.open("//opt/lampp/htdocs/mono/bin/test.fasta", 'w') do |f|
+      f.puts ">" + dis_sequence[:seq_name]
+      f.puts dis_sequence[:sequence]
+    end
+    disorder_out = `//opt/lampp/htdocs/mono/bin/./iupred test.fasta long`
+    File.open("//opt/lampp/htdocs/mono/bin/test_dis.txt.", 'w') do |f|
+      f.puts disorder_out
+    end
+    #show_disorder(disorder_out);
+  end	
+
+  def show_disorder(disorder_data)
+
+  end
+
+  def show
+    @sequence = Sequence.new		
+    respond_to do |format|
+			format.html # show.html.erb
+			format.xml  { render :xml => @sequence }
+		end
+    end
+
+  
+end

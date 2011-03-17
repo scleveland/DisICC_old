@@ -1,0 +1,435 @@
+	 Amino Acid Conservation Scores
+	===============================
+
+- POS: The position of the AA in the SEQRES derived sequence.
+- SEQ: The SEQRES derived sequence in one letter code.
+- SCORE: The normalized conservation score.
+- COLOR: The color scale representing the conservation score (9 - conserved, 1 - variable).
+- B/E: Burried (b) or Exposed (e) residue.
+- FUNCTION: functional (f) or structural (s) residue (f - highly conserved and exposed, s - highly conserved and burried).
+- MSA DATA: The number of aligned sequences having an amino acid (non-gapped) from the overall number of sequences at each position.
+- RESIDUE VARIETY: The amino acids variety in the multiple sequence alignment at each position.
+
+ POS	 SEQ	 SCORE	COLOR	B/E	FUNCTION	MSA DATA	RESIDUE VARIETY
+   1	   M	-1.128	    8	  e	       f	   16/51	M
+   2	   S	-0.310	    6	  e	        	   17/51	A,S,T
+   3	   S	 0.535	    3	  e	        	   18/51	A,D,P,S,V
+   4	   Q	 0.655	    3	  e	        	   18/51	K,Q,R,S,T,V
+   5	   V	-1.020	    8	  b	        	   25/51	L,M,V
+   6	   F	 0.736	    3	  e	        	   25/51	F,I,K,Y
+   7	   C	-0.234	    6	  e	        	   25/51	C,F,R,S
+   8	   I	-0.273	    6	  b	        	   28/51	C,I,K,T,V
+   9	   S	 1.348	    1	  e	        	   28/51	A,I,K,L,P,R,S,V
+  10	   T	-0.929	    8	  e	       f	   28/51	D,N,T
+  11	   G	 0.833	    3	  e	        	   28/51	D,G,K,N,Q,S
+  12	   Q	 0.306	    4	  e	        	   29/51	A,E,K,Q,S,T
+  13	   T	 1.760	    1	  e	        	   29/51	A,D,E,I,P,Q,S,T,V
+  14	   V	-0.881	    8	  b	        	   30/51	I,V,Y
+  15	   S	 1.963	    1	  e	        	   30/51	A,H,K,L,N,Q,R,S,T,V
+  16	   V	 0.206	    4	  e	        	   30/51	A,F,I,P,V,Y
+  17	   C	 0.991	    2	  e	        	   30/51	A,C,I,K,L,N,T,V
+  18	   L	-0.251	    6	  b	        	   39/51	A,F,K,L,Q
+  19	   P	-1.225	    9	  e	       f	   41/51	I,P
+  20	   A	-0.476	    6	  e	        	   41/51	A,G,K,L,R,S,T
+  21	   N	-0.390	    6	  e	        	   41/51	D,E,H,L,N,S,T
+  22	   E	-0.237	    6	  e	        	   41/51	A,D,E,K,R,S,T
+  23	   D	 0.115	    5	  e	        	   41/51	A,D,I,L,P,S,T,V
+  24	   P	 0.489	    4	  e	        	   41/51	A,E,K,P,Q,T
+  25	   V	-0.484	    6	  e	        	   41/51	A,I,L,P,V
+  26	   E	-0.641	    7	  e	        	   41/51	D,E,N,Q,T
+  27	   F	-1.280	    9	  b	       s	   42/51	F,Y
+  28	   P	-1.473	    9	  e	       f	   42/51	P
+  29	   G	-0.041	    5	  e	        	   42/51	A,G,K,R,S
+  30	   A	 0.421	    4	  e	        	   42/51	A,D,E,T
+  31	   F	 0.349	    4	  b	        	   42/51	A,F,G,H,W,Y
+  32	   F	-1.270	    9	  b	       s	   42/51	F,M
+  33	   T	 1.947	    1	  e	        	   42/51	A,D,E,I,K,L,N,R,T,V
+  34	   P	 0.481	    4	  e	        	   42/51	A,D,G,K,N,P,Q,V
+  35	   N	-0.900	    8	  e	       f	    6/51	G,N
+  36	   A	 0.292	    4	  e	        	   39/51	A,F,G,N,P,S,T
+  37	   K	 1.513	    1	  e	        	   40/51	G,K,N,P,R,S,T
+  38	   K	 0.757	    3	  e	        	   40/51	D,E,G,H,K,N,Q
+  39	   P	-0.177	    6	  b	        	   34/51	H,I,P,T
+  40	   T	 1.559	    1	  e	        	   39/51	A,I,L,M,P,R,T,V
+  41	   V	 0.405	    4	  b	        	   43/51	F,I,L,S,T,V
+  42	   Y	 1.651	    1	  b	        	   41/51	C,E,F,I,L,Q,R,V,Y
+  43	   I	-0.392	    6	  b	        	   36/51	I,N,R,T,V
+  44	   K	 0.329	    4	  e	        	   44/51	F,H,K,L,N,P,Q,S,Y
+  45	   K	 1.238	    1	  e	        	   44/51	A,G,I,K,Q,R,S,T,Y
+  46	   E	 0.978	    2	  e	        	   44/51	D,E,G,H,K,N,R,S,T
+  47	   T	 2.283	    1	  e	        	   44/51	A,E,F,G,I,K,L,P,T,V,Y
+  48	   D	 0.164	    5	  e	        	   44/51	A,D,K,N,P,R,S,T
+  49	   L	 0.016	    5	  b	        	   44/51	A,G,I,L,P,Q,V
+  50	   S	 1.780	    1	  e	        	   44/51	A,D,E,K,N,P,Q,R,S
+  51	   L	 1.342	    1	  e	        	   44/51	A,D,E,K,L,N,T,V
+  52	   L	-0.231	    6	  b	        	   44/51	A,I,L,M,V
+  53	   R	-0.514	    6	  e	        	   44/51	E,F,K,L,R
+  54	   S	 1.526	    1	  e	        	   44/51	A,C,D,E,G,N,Q,R,S,T
+  55	   H	 0.575	    3	  b	        	   44/51	A,F,H,I,L,M,S,T,V,Y
+  56	   V	-1.068	    8	  b	        	   44/51	I,L,V
+  57	   Y	 1.400	    1	  b	        	   44/51	A,F,G,K,L,M,R,S,Y
+  58	   D	 1.457	    1	  e	        	   44/51	A,D,E,G,H,M,N,Q,S,T
+  59	   G	-0.759	    7	  e	        	   45/51	D,E,G,Q
+  60	   I	-0.183	    6	  b	        	   45/51	A,F,I,L,P,T
+  61	   K	 1.317	    1	  e	        	   45/51	E,G,K,L,M,Q,R,S,T,V
+  62	   D	 0.923	    2	  e	        	   45/51	A,D,E,G,K,L,N,Q,R,S,T
+  63	   G	-0.250	    6	  e	        	   45/51	D,G,K,N,R,S
+  64	   S	 1.470	    1	  e	        	   46/51	A,D,E,G,K,N,R,S,T,V
+  65	   V	-0.172	    5	  b	        	   46/51	C,I,L,P,V
+  66	   T	 0.890	    2	  e	        	   46/51	D,E,G,H,K,N,P,R,S,T,V
+  67	   V	 0.377	    4	  b	        	   47/51	A,G,I,L,P,S,V
+  68	   S	 1.737	    1	  b	        	   46/51	C,D,E,G,H,I,K,L,N,P,Q,S,V
+  69	   Q	 0.214	    4	  b	        	   47/51	G,H,I,L,M,Q,V,Y
+  70	   I	-0.769	    7	  b	        	   47/51	A,I,R,V
+  71	   N	-0.088	    5	  b	        	   47/51	A,I,K,L,N,T,V
+  72	   S	-0.459	    6	  b	        	   47/51	A,H,L,R,S
+  73	   Y	-0.576	    7	  b	        	   49/51	F,G,H,Y
+  74	   L	-0.560	    7	  b	        	   49/51	I,L,M
+  75	   Y	-0.403	    6	  b	        	   49/51	C,E,I,Q,W,Y
+  76	   M	 0.535	    3	  b	        	   49/51	A,E,G,H,L,M,N,Q,R,Y
+  77	   V	-0.787	    7	  b	        	   49/51	A,C,F,I,V,Y
+  78	   L	 0.032	    5	  b	        	   49/51	C,F,G,I,L,M
+  79	   K	 0.049	    5	  e	        	   49/51	A,D,E,K,Q,S
+  80	   D	 1.438	    1	  e	        	   49/51	D,E,G,H,K,N,Q,R,S,T
+  81	   I	-0.156	    5	  b	        	   49/51	E,I,K,M,Q,T,V,W
+  82	   R	 1.760	    1	  e	        	   49/51	D,E,G,K,Q,R,S,T,V
+  83	   E	 0.278	    4	  e	        	   49/51	A,D,E,G,H,I,N
+  84	   K	 0.962	    2	  e	        	   49/51	D,E,K,L,R,T,V
+  85	   P	-0.547	    7	  b	        	   49/51	A,L,N,P,S
+  86	   D	-0.114	    5	  e	        	   49/51	D,E,H,N,P,Q,R,S
+  87	   K	 1.969	    1	  e	        	   49/51	A,D,E,G,K,N,R,S,V
+  88	   N	-0.505	    6	  e	        	   49/51	A,D,E,I,K,N
+  89	   W	-1.310	    9	  b	       s	   49/51	W
+  90	   T	 1.808	    1	  e	        	   49/51	D,E,I,N,Q,R,S,T,V
+  91	   S	-1.374	    9	  e	       f	   49/51	S,T
+  92	   F	-0.950	    8	  b	        	   49/51	F,H,Y
+  93	   G	-0.856	    7	  b	        	   49/51	D,G,N,R
+  94	   V	-0.638	    7	  e	        	   49/51	E,H,I,R,T,V
+  95	   E	 1.955	    1	  e	        	   49/51	A,E,H,I,K,L,N,Q,S,T,V
+  96	   L	-1.201	    8	  b	        	   49/51	I,L,V
+  97	   G	-0.749	    7	  b	        	   49/51	A,C,G,L
+  98	   K	 2.158	    1	  e	        	   49/51	A,D,E,G,I,K,N,P,Q,R,S,T,V
+  99	   K	 0.505	    4	  e	        	   49/51	A,E,I,K,L,Q,R,V
+ 100	   N	 0.072	    5	  e	        	   48/51	D,E,G,K,N,T
+ 101	   E	 0.884	    2	  e	        	   48/51	A,D,E,G,Q,T
+ 102	   P	 1.544	    1	  e	        	   48/51	A,E,I,K,N,P,R,S,T,V
+ 103	   M	-0.640	    7	  b	        	   49/51	G,I,M,V
+ 104	   G	-0.113	    5	  e	        	   49/51	C,G,K,N,R,S,T
+ 105	   I	-0.792	    7	  b	        	   49/51	A,I,L,P,V
+ 106	   F	 0.344	    4	  b	        	   49/51	F,L,M,R,S,W
+ 107	   D	-0.577	    7	  e	        	   49/51	C,D,N,S,V
+ 108	   L	 0.155	    5	  b	        	   50/51	F,G,I,L,M,T
+ 109	   L	 0.393	    4	  b	        	   50/51	C,F,I,L,M,V,Y
+ 110	   N	 2.007	    1	  e	        	   50/51	D,E,H,K,M,N,Q,R,S,T,Y
+ 111	   V	-0.471	    6	  b	        	   50/51	I,L,V,Y
+ 112	   E	 1.032	    2	  e	        	   50/51	D,E,I,K,M,Q,R,S,T,V
+ 113	   D	 2.056	    1	  e	        	   50/51	A,D,E,G,I,L,N,R,V,W,Y
+ 114	   V	 1.127	    2	  e	        	   50/51	A,D,E,G,I,K,L,V,Y
+ 115	   K	 1.381	    1	  e	        	   50/51	A,D,E,G,K,P,Q,R,T
+ 116	   G	 0.201	    4	  e	        	   50/51	D,E,G,Q,R,S,T
+ 117	   K	 1.985	    1	  e	        	   50/51	A,D,E,G,K,L,N,P,Q,R,V,Y
+ 118	   E	 2.003	    1	  e	        	   50/51	A,C,E,K,L,R,S,T,V
+ 119	   L	-0.222	    6	  e	        	   50/51	A,E,F,I,L,P,Q,S
+ 120	   D	-0.773	    7	  e	        	   50/51	D,E,N,Q,S,Y
+ 121	   K	 0.348	    4	  e	        	   49/51	A,G,K,L,Q,S,V,Y
+ 122	   K	 0.716	    3	  e	        	   48/51	A,G,K,N,R,T,V
+ 123	   G	 1.184	    2	  e	        	   49/51	E,G,K,L,R,S,T,V
+ 124	   Q	 0.062	    5	  e	        	   50/51	A,C,D,G,K,N,Q,S
+ 125	   D	 0.980	    2	  e	        	   50/51	A,D,E,K,N,P,Q,S,T
+ 126	   T	 1.207	    2	  e	        	   50/51	D,E,G,I,K,N,S,T,V
+ 127	   R	-0.092	    5	  e	        	   44/51	A,I,L,P,Q,R,V
+ 128	   L	-0.216	    6	  e	        	   44/51	A,D,E,K,L,N,S,T
+ 129	   P	 1.630	    1	  e	        	   44/51	A,D,E,I,K,P,Q,R,S,V
+ 130	   G	 0.805	    3	  e	        	   50/51	A,D,E,G,I,K,N,T,V
+ 131	   D	-0.624	    7	  e	        	   51/51	A,D,E,K,Q,R,V
+ 132	   D	-0.585	    7	  e	        	   51/51	A,D,G,P,Q,S,Y
+ 133	   L	 1.412	    1	  e	        	   51/51	A,E,G,H,K,L,N,Q,T,V
+ 134	   W	-1.120	    8	  b	        	   51/51	A,W
+ 135	   L	-0.831	    7	  b	        	   51/51	I,L,M
+ 136	   P	-0.222	    6	  b	        	   51/51	A,L,M,P,R,T,V
+ 137	   T	 0.157	    5	  b	        	   51/51	A,F,I,L,M,T
+ 138	   L	 1.389	    1	  b	        	   51/51	A,F,I,L,M,V,W,Y
+ 139	   I	 0.063	    5	  b	        	   51/51	C,I,L,V
+ 140	   F	-0.833	    7	  b	        	   51/51	C,F,I,L,T
+ 141	   G	-0.346	    6	  b	        	   51/51	A,F,G,S,Y
+ 142	   L	 0.504	    4	  b	        	   51/51	H,I,L,M,P,Q,V,Y
+ 143	   Y	-1.150	    8	  b	        	   51/51	I,Q,Y
+ 144	   R	-1.541	    9	  e	       f	   51/51	R
+ 145	   V	-0.349	    6	  b	        	   51/51	F,H,I,L,V,Y
+ 146	   S	-0.116	    5	  b	        	   51/51	A,G,N,S,T,V
+ 147	   R	-0.734	    7	  e	        	   51/51	F,G,K,R,S,T
+ 148	   A	-0.585	    7	  e	        	   45/51	A,I,S,T,V
+ 149	   T	-0.497	    6	  e	        	   45/51	A,K,Q,S,T
+ 150	   Q	-0.442	    6	  e	        	   45/51	D,E,H,M,N,Q,V
+ 151	   V	 0.777	    3	  e	        	   45/51	D,E,K,P,Q,S,T,V
+ 152	   E	 0.160	    5	  e	        	   51/51	A,D,E,N,Q,R,T
+ 153	   Y	-1.167	    8	  b	        	   51/51	H,L,Y
+ 154	   K	-0.458	    6	  e	        	   51/51	K,Q,R
+ 155	   K	-0.068	    5	  e	        	   51/51	D,G,K,N,R,S,T
+ 156	   T	 1.034	    2	  e	        	   51/51	A,D,E,K,L,N,Q,R,S,T
+ 157	   L	-0.828	    7	  b	        	   51/51	I,L,V,Y
+ 158	   M	 0.032	    5	  b	        	   51/51	A,F,I,L,M,S,W,Y
+ 159	   T	 0.623	    3	  e	        	   51/51	D,E,I,K,Q,T,V
+ 160	   N	 0.419	    4	  e	        	   51/51	A,E,G,H,K,N,R,S,T
+ 161	   L	-0.827	    7	  b	        	   51/51	A,F,I,L,V
+ 162	   Y	-0.245	    6	  e	        	   51/51	C,D,E,I,K,N,Q,T,Y
+ 163	   A	 1.253	    1	  e	        	   51/51	A,E,G,I,K,L,N,Q,T,V
+ 164	   Q	-0.712	    7	  e	        	   51/51	F,H,I,L,Q,R,V
+ 165	   C	 0.344	    4	  b	        	   51/51	A,C,I,L,M,V,Y
+ 166	   K	 0.057	    5	  e	        	   51/51	A,D,K,L,Q,R,S,T
+ 167	   L	 0.237	    4	  e	        	   51/51	A,E,G,L,M,N,P,S,T,V
+ 168	   R	 0.649	    3	  e	        	   51/51	A,F,I,K,L,R,T,Y
+ 169	   T	 1.124	    2	  e	        	   51/51	A,D,G,H,I,K,L,N,P,R,S,T
+ 170	   K	 1.250	    1	  e	        	   51/51	A,D,E,G,H,K,P,S,T
+ 171	   D	 0.277	    4	  e	        	   51/51	D,E,K,N,Q,R,S
+ 172	   A	 1.367	    1	  b	        	   51/51	A,F,I,K,P,S,W,Y
+ 173	   E	-0.128	    5	  e	        	   51/51	A,C,E,G,I,L,P,Q,V
+ 174	   E	 0.492	    4	  e	        	   51/51	D,E,G,L,N,P,R,S,T
+ 175	   I	 0.517	    4	  b	        	   49/51	I,L,M,N,P,V,Y
+ 176	   V	 0.145	    5	  b	        	   49/51	G,I,N,Q,S,T,V
+ 177	   D	 0.607	    3	  e	        	   49/51	D,E,N,P,Q,R,S,T
+ 178	   E	 1.458	    1	  e	        	   47/51	A,D,E,G,P,R,S,T,V
+ 179	   T	 0.631	    3	  b	        	   49/51	A,G,I,L,N,P,Q,S,T,V
+ 180	   A	 2.107	    1	  e	        	   51/51	A,D,H,I,K,L,M,P,Q,R,S,V
+ 181	   E	 1.156	    2	  e	        	   51/51	A,D,E,G,K,N,P,Q,S,T
+ 182	   F	 1.712	    1	  b	        	   50/51	A,F,I,K,L,N,Q,R,T,V,Y
+ 183	   F	 1.597	    1	  b	        	   51/51	A,F,H,I,L,M,N,Q,T,Y
+ 184	   N	 1.477	    1	  e	        	   51/51	A,D,E,G,K,N,Q,R,S,T,V
+ 185	   A	 0.220	    4	  b	        	   51/51	A,G,H,I,L,N,Q,S,T,V
+ 186	   W	-0.181	    6	  b	        	   51/51	A,I,L,W
+ 187	   A	 1.288	    1	  e	        	   51/51	A,E,G,I,L,N,P,S,T,V
+ 188	   N	-0.311	    6	  e	        	   51/51	A,K,L,N,Q,S,T
+ 189	   D	-1.206	    8	  e	       f	   51/51	D,H,N,S
+ 190	   S	 1.133	    2	  e	        	   51/51	A,D,G,I,K,M,N,P,Q,S,T,V
+ 191	   N	-0.848	    7	  e	        	   51/51	A,D,E,I,N,P,T
+ 192	   F	-0.523	    6	  b	        	   51/51	F,Y
+ 193	   T	 0.144	    5	  b	        	   51/51	C,I,L,N,T
+ 194	   K	-1.204	    8	  e	       f	   51/51	A,K,R
+ 195	   I	-0.630	    7	  b	        	   51/51	A,I,L,M,V
+ 196	   V	-0.832	    7	  b	        	   51/51	A,I,S,V
+ 197	   A	-1.512	    9	  b	       s	   51/51	A,S
+ 198	   A	-0.201	    6	  b	        	   51/51	A,C,G,L,S,V
+ 199	   V	-0.649	    7	  b	        	   51/51	F,I,L,V
+ 200	   D	-1.542	    9	  b	       s	   51/51	D
+ 201	   M	-1.498	    9	  b	       s	   51/51	F,M
+ 202	   Y	-0.885	    8	  b	        	   51/51	F,Y
+ 203	   F	-0.537	    7	  b	        	   51/51	F,L,M,Y
+ 204	   H	 0.305	    4	  b	        	   51/51	C,D,F,H,N,S,Y
+ 205	   H	-0.493	    6	  e	        	   51/51	H,K,M,R
+ 206	   F	-1.181	    8	  b	        	   51/51	F,H,L
+ 207	   K	-1.296	    9	  e	       f	   51/51	K,P,R
+ 208	   K	-0.308	    6	  e	        	   51/51	D,E,K,M,N,Q,S,T
+ 209	   S	-0.442	    6	  e	        	   51/51	A,D,E,H,N,S
+ 210	   D	 0.272	    4	  e	        	   51/51	A,D,E,I,K,P,Q
+ 211	   H	 2.057	    1	  e	        	   51/51	C,D,E,F,H,K,L,M,Q,R,W,Y
+ 212	   A	-1.247	    9	  b	       s	   51/51	A,S
+ 213	   P	 1.720	    1	  e	        	   51/51	D,E,F,G,H,I,K,N,P,S,T,V,Y
+ 214	   I	 0.079	    5	  b	        	   51/51	C,F,I,L,M,V
+ 215	   R	-1.474	    9	  e	       f	   51/51	R,W
+ 216	   F	-0.259	    6	  b	        	   51/51	F,I,M,V,W,Y
+ 217	   G	-0.809	    7	  b	        	   51/51	A,C,G,S
+ 218	   T	-1.523	    9	  e	       f	   51/51	S,T
+ 219	   I	-0.696	    7	  b	        	   51/51	C,I,L,V
+ 220	   V	-0.355	    6	  b	        	   51/51	A,G,P,S,T,V
+ 221	   S	-1.378	    9	  b	       s	   51/51	C,S,T
+ 222	   R	-1.541	    9	  e	       f	   51/51	R
+ 223	   F	-0.532	    7	  b	        	   51/51	F,H,I,Y
+ 224	   K	-0.968	    8	  e	       f	   51/51	G,K,R
+ 225	   D	-1.542	    9	  e	       f	   51/51	D
+ 226	   C	-1.184	    8	  b	        	   51/51	A,C,S
+ 227	   A	-1.435	    9	  b	       s	   51/51	A,S
+ 228	   A	-1.105	    8	  b	        	   51/51	A,G,S
+ 229	   L	-1.226	    9	  b	       s	   51/51	I,L,V
+ 230	   S	-0.249	    6	  b	        	   51/51	A,G,L,M,S,T
+ 231	   T	-0.714	    7	  e	        	   51/51	A,D,G,S,T,V
+ 232	   L	-0.738	    7	  b	        	   51/51	F,I,L,M
+ 233	   S	-0.205	    6	  e	        	   51/51	A,E,G,N,R,S
+ 234	   H	-1.474	    9	  e	       f	   51/51	F,H
+ 235	   L	 0.062	    5	  b	        	   51/51	A,F,I,L,V
+ 236	   Q	 0.620	    3	  b	        	   51/51	A,C,I,K,L,Q,R,S,T,V
+ 237	   K	 0.309	    4	  e	        	   51/51	D,E,F,K,Q,R,S,T
+ 238	   V	-0.391	    6	  b	        	   51/51	F,I,L,T,V
+ 239	   T	-0.759	    7	  e	        	   51/51	A,G,I,L,S,T,V
+ 240	   G	-1.005	    8	  e	       f	   51/51	G,K,N,S
+ 241	   L	-0.116	    5	  b	        	   51/51	F,G,L,M,V,Y
+ 242	   P	 0.352	    4	  e	        	   51/51	A,D,K,N,P,S,T
+ 243	   I	 0.089	    5	  b	        	   51/51	A,G,I,L,M,P,T,V
+ 244	   E	 1.614	    1	  e	        	   51/51	A,D,E,G,I,K,L,R,S,T,V
+ 245	   E	-0.297	    6	  e	        	   51/51	D,E,G,K,L,Q
+ 246	   V	 0.049	    5	  b	        	   51/51	A,D,F,G,I,L,M,V
+ 247	   F	 0.117	    5	  b	        	   51/51	F,I,L,M,S,T,V
+ 248	   T	-0.115	    5	  e	        	   51/51	A,D,E,G,K,L,Q,R,S,T
+ 249	   W	-1.083	    8	  b	        	   51/51	L,W
+ 250	   V	-0.716	    7	  b	        	   51/51	A,D,I,M,S,V
+ 251	   F	-0.673	    7	  b	        	   51/51	F,L,W
+ 252	   N	-0.998	    8	  b	        	   51/51	L,N,Q,S,T,V
+ 253	   K	 1.196	    2	  e	        	   51/51	A,D,E,G,K,P,Q,R,S,T,Y
+ 254	   S	-0.203	    6	  e	        	   51/51	A,E,N,P,Q,R,S,T
+ 255	   V	-0.693	    7	  b	        	   51/51	I,L,M,T,V
+ 256	   Q	-0.563	    7	  b	        	   51/51	A,E,G,H,Q,S
+ 257	   D	-0.392	    6	  e	        	   51/51	A,D,E,K,M,S,T
+ 258	   D	-0.955	    8	  e	       f	   51/51	D,E,N
+ 259	   L	 0.253	    4	  b	        	   51/51	A,C,I,L,M,V
+ 260	   L	 1.481	    1	  b	        	   51/51	A,C,D,E,H,I,K,L,M,V,Y
+ 261	   R	-0.246	    6	  e	        	   51/51	G,I,K,Q,R
+ 262	   M	-0.700	    7	  b	        	   51/51	I,L,M
+ 263	   M	-0.964	    8	  b	        	   51/51	A,I,L,M,S
+ 264	   T	 0.623	    3	  e	        	   51/51	E,H,K,L,M,R,T,V,Y
+ 265	   P	-0.526	    7	  e	        	   51/51	E,K,P,T
+ 266	   G	-0.364	    6	  e	        	   51/51	D,E,G,N,R
+ 267	   Q	-0.910	    8	  e	       f	   51/51	E,N,Q
+ 268	   E	-1.531	    9	  e	       f	   51/51	E
+ 269	   I	-0.905	    8	  b	        	   51/51	I,L,T,V
+ 270	   D	-1.377	    9	  e	       f	   51/51	D,E,N
+ 271	   Q	-0.609	    7	  e	        	   51/51	D,K,N,Q
+ 272	   A	-0.127	    5	  e	        	   51/51	A,E,G,P,R,S,T,V
+ 273	   D	-0.543	    7	  e	        	   51/51	A,D,L,M,S,T,Y
+ 274	   S	-1.571	    9	  e	       f	   51/51	S
+ 275	   Y	-1.009	    8	  b	        	   51/51	F,L,Y
+ 276	   M	-0.827	    7	  b	        	   51/51	A,M,S,T,V
+ 277	   P	-1.262	    9	  b	       s	   51/51	A,P,Q
+ 278	   Y	-1.467	    9	  b	       s	   51/51	Y
+ 279	   L	-0.802	    7	  b	        	   51/51	I,L,M,T,V
+ 280	   I	-0.989	    8	  b	        	   51/51	A,I,K,M,R
+ 281	   D	-1.227	    9	  b	       s	   51/51	D,E,S
+ 282	   M	-0.091	    5	  b	        	   51/51	F,L,M
+ 283	   G	-1.205	    8	  e	       f	   51/51	G,Q,R
+ 284	   L	-0.446	    6	  b	        	   51/51	I,L
+ 285	   S	-1.455	    9	  b	       s	   51/51	C,S
+ 286	   T	 0.709	    3	  e	        	   51/51	A,D,E,K,L,M,N,Q,R,S,T
+ 287	   K	-0.954	    8	  e	       f	   51/51	A,K,L,R,V
+ 288	   S	-1.571	    9	  e	       f	   51/51	S
+ 289	   P	-1.498	    9	  e	       f	   51/51	P
+ 290	   Y	-1.467	    9	  e	       f	   51/51	Y
+ 291	   S	-1.474	    9	  e	       f	   51/51	F,S,W
+ 292	   S	-0.730	    7	  e	        	   51/51	A,S,T
+ 293	   T	-0.638	    7	  b	        	   51/51	I,Q,S,T,V
+ 294	   K	-0.164	    5	  e	        	   51/51	A,K,M,N,R,S,T,V
+ 295	   N	-1.495	    9	  e	       f	   51/51	C,N
+ 296	   P	-1.498	    9	  e	       f	   51/51	P
+ 297	   S	-0.388	    6	  b	        	   51/51	A,C,G,H,N,Q,S
+ 298	   F	-0.400	    6	  b	        	   51/51	F,I,L,M,T,W
+ 299	   H	-1.222	    9	  b	       s	   51/51	H,S,V,Y
+ 300	   F	-0.411	    6	  b	        	   51/51	A,C,F,I,L,M,S,T
+ 301	   W	-0.734	    7	  b	        	   51/51	F,L,W,Y
+ 302	   G	-0.310	    6	  b	        	   51/51	A,C,G,I,L,S,V
+ 303	   Q	-1.486	    9	  b	       s	   51/51	H,Q
+ 304	   L	 0.290	    4	  b	        	   51/51	A,F,I,L,M,S,T,V
+ 305	   T	-0.251	    6	  b	        	   51/51	A,I,L,N,T,V
+ 306	   A	-1.131	    8	  b	        	   50/51	A,C,G
+ 307	   F	-0.404	    6	  b	        	   50/51	A,C,F,L,S,T,V
+ 308	   L	-0.857	    7	  b	        	   50/51	A,F,L,W
+ 309	   V	-0.346	    6	  b	        	   50/51	A,C,I,L,M,N,V
+ 310	   K	 1.158	    2	  e	        	   51/51	F,G,H,K,L,M,N,R,S,T,V
+ 311	   S	-1.457	    9	  e	       f	   51/51	N,R,S
+ 312	   A	 1.153	    2	  e	        	   51/51	A,D,E,H,I,K,P,R,T,V
+ 313	   R	-1.541	    9	  e	       f	   51/51	R
+ 314	   A	-1.530	    9	  e	       f	   51/51	A,S
+ 315	   K	 0.414	    4	  e	        	   51/51	I,K,L,M,Q,R
+ 316	   N	-1.442	    9	  e	       f	   51/51	H,N
+ 317	   A	-1.511	    9	  b	       s	   51/51	A,S
+ 318	   L	-0.642	    7	  e	        	   51/51	I,K,L,Q,R
+ 319	   V	-0.688	    7	  e	        	   51/51	A,H,I,L,M,Q,R,V
+ 320	   P	 0.162	    5	  e	        	   51/51	A,G,I,L,N,P,S,V
+ 321	   V	 0.147	    5	  e	        	   51/51	A,D,E,G,L,R,S,T,V
+ 322	   D	-0.942	    8	  e	       f	   51/51	A,D,E,V
+ 323	   I	-0.018	    5	  e	        	   51/51	A,D,E,H,I,K,N,P,Q,V
+ 324	   A	-0.549	    7	  e	        	   51/51	A,D,E,G,I,N,P,S
+ 325	   Y	 0.649	    3	  b	        	   51/51	I,L,M,Q,R,S,T,W,Y
+ 326	   H	 1.290	    1	  b	        	   51/51	A,H,L,M,N,Q,S,T,V
+ 327	   E	-1.126	    8	  e	       f	   50/51	D,E,N,S
+ 328	   L	-0.585	    7	  b	        	   51/51	I,L,S,T,V
+ 329	   T	-0.280	    6	  e	        	   51/51	F,I,K,L,R,S,T,V
+ 330	   T	 1.005	    2	  b	        	   51/51	A,C,I,K,L,M,N,Q,R,S,T,V
+ 331	   A	-1.509	    9	  b	       s	   50/51	A,N
+ 332	   A	-1.118	    8	  b	        	   50/51	A,G,S
+ 333	   L	 1.068	    2	  b	        	   50/51	A,E,F,G,K,L,S,W
+ 334	   L	-0.894	    8	  b	        	   50/51	F,I,L,V
+ 335	   F	-0.538	    7	  b	        	   50/51	F,I,L,M,T,V,Y
+ 336	   A	-1.071	    8	  b	        	   50/51	A,I,N,S,V
+ 337	   Y	-0.373	    6	  b	        	   50/51	C,F,M,Y
+ 338	   A	-1.331	    9	  b	       s	   50/51	A,V
+ 339	   I	 0.519	    4	  b	        	   50/51	F,I,K,L,M,R,T,V,Y
+ 340	   G	-0.694	    7	  b	        	   50/51	C,D,E,G,N,S
+ 341	   R	-0.446	    6	  e	        	   50/51	E,H,K,N,R,S,T
+ 342	   S	-0.527	    7	  e	        	   50/51	G,K,L,N,R,S,T
+ 343	   S	 0.337	    4	  e	        	   50/51	A,D,G,I,L,P,S,V,Y
+ 344	   E	 0.220	    4	  e	        	   50/51	A,D,E,G,K,M,N,S,T
+ 345	   L	-0.097	    5	  b	        	   50/51	C,F,I,L,M,W,Y
+ 346	   E	 1.289	    1	  e	        	   50/51	A,C,E,I,K,L,N,Q,S,T,V
+ 347	   Q	-0.091	    5	  e	        	   50/51	A,H,I,K,L,P,Q,T,V
+ 348	   R	-0.328	    6	  e	        	   50/51	A,E,G,N,Q,R,S,Y
+ 349	   F	-1.184	    8	  b	        	   50/51	F,I,Y
+ 350	   V	 1.658	    1	  e	        	   49/51	A,C,D,E,F,G,I,K,L,R,S,T,V,Y
+ 351	   L	 1.037	    2	  e	        	   48/51	D,E,I,K,L,M,R,S,T,V
+ 352	   N	 1.573	    1	  e	        	   48/51	D,E,G,H,L,N,P,Q,R,S,T
+ 353	   G	 0.631	    3	  e	        	   48/51	D,E,G,K,N,P,Q
+ 354	   K	 1.891	    1	  e	        	   48/51	A,D,E,F,K,N,P,S,T,V
+ 355	   K	 2.072	    1	  e	        	   48/51	D,E,I,K,L,N,P,Q,R,S,T,V,Y
+ 356	   F	 1.259	    1	  e	        	   47/51	D,E,F,G,L,M,R,S,T,Y
+ 357	   T	 1.360	    1	  e	        	   47/51	A,D,I,K,N,P,Q,S,T,V
+ 358	   K	 1.998	    1	  e	        	   43/51	D,E,I,K,L,P,Q,S,T,Y
+ 359	   E	 1.299	    1	  e	        	   39/51	D,E,L,P,R,V
+ 360	   K	 1.125	    2	  e	        	   43/51	D,E,K,N,Q,R,S,T
+ 361	   D	 0.800	    3	  e	        	   43/51	D,E,N,P,Q,R,S,T,V
+ 362	   S	 1.339	    1	  e	        	   40/51	A,D,E,I,L,R,S,T,V
+ 363	   R	 1.044	    2	  e	        	   40/51	A,E,G,N,R,S,V
+ 364	   E	 2.199	    1	  e	        	   40/51	D,E,G,I,K,L,Q,R,T,V,Y
+ 365	   D	 2.267	    1	  e	        	   42/51	A,D,E,G,I,K,L,R,S,T
+ 366	   N	 2.114	    1	  e	        	   42/51	D,E,G,K,L,M,N,R,S,T,V
+ 367	   D	 1.798	    1	  e	        	   42/51	D,G,I,L,M,P,Q,S,T
+ 368	   T	 1.405	    1	  e	        	   42/51	A,D,E,G,K,N,S,T,V
+ 369	   T	 1.609	    1	  e	        	   37/51	A,D,E,G,K,Q,T,V
+ 370	   P	 0.971	    2	  e	        	   42/51	A,E,F,I,L,M,P,T,V
+ 371	   P	-1.460	    9	  e	       f	   42/51	P
+ 372	   S	-0.033	    5	  e	        	   42/51	E,K,N,Q,S,T
+ 373	   E	-0.282	    6	  e	        	   42/51	A,E,G,K,N,S,T
+ 374	   R	 0.160	    5	  e	        	   42/51	A,D,K,M,Q,R,S,T
+ 375	   N	-0.574	    7	  e	        	   42/51	D,E,H,N,S
+ 376	   V	-0.987	    8	  e	       f	   42/51	A,P,V
+ 377	   V	-0.060	    5	  b	        	   42/51	D,E,H,I,L,M,Q,V
+ 378	   V	-0.617	    7	  e	        	   42/51	D,E,M,V
+ 379	   W	-1.259	    9	  b	       s	   42/51	W
+ 380	   L	-0.135	    5	  b	        	   42/51	F,I,L,M,Y
+ 381	   A	 0.022	    5	  b	        	   42/51	A,D,G,L,M,N,S
+ 382	   W	-0.446	    6	  b	        	   42/51	F,W,Y
+ 383	   W	 0.023	    5	  b	        	   42/51	F,L,M,R,V,W,Y
+ 384	   E	 0.437	    4	  e	        	   42/51	D,E,G,K,N,S
+ 385	   D	-0.128	    5	  e	        	   42/51	A,D,G,I,L,S,T
+ 386	   I	 0.306	    4	  e	        	   42/51	I,K,L,M,N,Q,R,S,V
+ 387	   K	 1.188	    2	  e	        	   42/51	D,G,H,K,N,Q,R
+ 388	   H	 0.253	    4	  e	        	   42/51	C,D,F,G,H,K,N,Q,R
+ 389	   E	-0.261	    6	  e	        	   42/51	D,E,K,Q,V
+ 390	   I	 0.160	    5	  e	        	   42/51	F,I,L,P,R,V
+ 391	   T	-1.253	    9	  e	       f	   42/51	E,P,T
+ 392	   P	 1.996	    1	  e	        	   42/51	A,D,E,N,P,Q,R,T
+ 393	   D	-0.643	    7	  e	        	   42/51	D,E,I,K,L
+ 394	   M	-0.962	    8	  b	        	   42/51	A,C,I,L,M
+ 395	   K	 0.755	    3	  e	        	   42/51	E,G,K,L,M,T
+ 396	   A	 1.643	    1	  e	        	   42/51	A,D,E,K,M,N,Q,R,S,T,V
+ 397	   F	 0.398	    4	  b	        	   42/51	F,G,M,R,W,Y
+ 398	   A	-0.730	    7	  b	        	   42/51	A,G,I,L,M,V
+ 399	   K	 0.234	    4	  e	        	   42/51	E,H,K,N,R,S
+ 400	   R	 0.301	    4	  e	        	   42/51	A,D,H,K,M,R,S,T
+ 401	   A	-0.245	    6	  e	        	   42/51	A,E,K,L,M,R,V
+ 402	   V	-0.808	    7	  b	        	   42/51	A,L,M,S,V
+ 403	   E	 2.187	    1	  e	        	   42/51	A,D,E,G,H,K,L,M,N,Q,R,S
+ 404	   R	 0.016	    5	  e	        	   42/51	A,G,K,N,R,S,T
+ 405	   V	-0.529	    7	  b	        	   42/51	I,L,M,V
+ 406	   G	 0.834	    3	  e	        	   42/51	A,G,K,L,Q,S,T,V
+ 407	   D	 0.746	    3	  e	        	   42/51	A,D,E,G,H,N,Q,S,T
+ 408	   I	 0.830	    3	  b	        	   42/51	A,C,I,L,P,S,T,V
+ 409	   R	-1.514	    9	  e	       f	   42/51	R
+ 410	   V	 1.927	    1	  e	        	   41/51	A,D,E,K,P,S,V
+ 411	   N	 0.115	    5	  e	        	   41/51	D,E,G,K,N
+ 412	   S	-0.832	    7	  e	        	   41/51	S,T
+ 413	   V	-0.744	    7	  b	        	   41/51	D,I,V
+ 414	   A	-1.279	    9	  e	       f	   41/51	A,G
+ 415	   E	 0.404	    4	  e	        	   41/51	A,D,E,K,Q,S
+ 416	   Y	-0.159	    5	  e	        	   40/51	F,H,W,Y
+ 417	   A	-0.620	    7	  b	        	   38/51	A,I,L,V
+ 418	   R	-0.796	    7	  e	        	   38/51	K,N,R,S
+ 419	   K	 2.049	    1	  e	        	   36/51	A,D,E,G,K,M,Q,S,T,V
+ 420	   L	-0.163	    5	  e	        	   40/51	A,E,L,P,T,Y
+ 421	   F	-0.546	    7	  e	        	    9/51	F,Y
+ 422	   A	 1.841	    1	  e	        	   41/51	A,D,E,F,G,M,S,T

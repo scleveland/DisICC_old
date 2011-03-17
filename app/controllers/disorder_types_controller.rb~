@@ -1,0 +1,85 @@
+class DisorderTypesController < ApplicationController
+  # GET /disorder_types
+  # GET /disorder_types.xml
+  def index
+    @disorder_types = DisorderType.find(:all)
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @disorder_types }
+    end
+  end
+
+  # GET /disorder_types/1
+  # GET /disorder_types/1.xml
+  def show
+    @disorder_types = DisorderType.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @disorder_types }
+    end
+  end
+
+  # GET /disorder_types/new
+  # GET /disorder_types/new.xml
+  def new
+    @disorder_types = DisorderType.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @disorder_types }
+    end
+  end
+
+  # GET /disorder_types/1/edit
+  def edit
+    @disorder_types = DisorderType.find(params[:id])
+  end
+
+  # POST /disorder_types
+  # POST /disorder_types.xml
+  def create
+    @disorder_types = DisorderType.new(params[:disorder_type])
+
+    respond_to do |format|
+      if @disorder_types.save
+        flash[:notice] = 'Disorder_types was successfully created.'
+        format.html { redirect_to(@disorder_types) }
+        format.xml  { render :xml => @disorder_types, :status => :created, :location => @disorder_types }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @disorder_types.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /disorder_types/1
+  # PUT /disorder_types/1.xml
+  def update
+    @disorder_types = DisorderType.find(params[:id])
+
+    respond_to do |format|
+      if @disorder_types.update_attributes(params[:disorder_types])
+        flash[:notice] = 'Disorder_types was successfully updated.'
+        format.html { redirect_to(@disorder_types) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @disorder_types.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /disorder_types/1
+  # DELETE /disorder_types/1.xml
+  def destroy
+    @disorder_types = DisorderType.find(params[:id])
+    @disorder_types.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(disorder_types_url) }
+      format.xml  { head :ok }
+    end
+  end
+end
