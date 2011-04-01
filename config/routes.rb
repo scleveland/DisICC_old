@@ -11,7 +11,9 @@ Disicc::Application.routes.draw do
     end
     collection do
       get :upload
+      post :pre_process_fasta_file 
       post :process_fasta_file 
+      post :complete_process_fasta_file 
     end
      #match 'alignments/:id', :to => 'catalog#display_annotated_alignment'
   end

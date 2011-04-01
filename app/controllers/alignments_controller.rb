@@ -25,7 +25,7 @@ class AlignmentsController < ApplicationController
   # GET /alignments/new.xml
   def new
     @alignment = Alignment.new
-
+    @seq_types = {:N=>"N", :L=>"L", :P => "P"}
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @alignment }
@@ -125,10 +125,91 @@ class AlignmentsController < ApplicationController
     @seq_types = {:N=>"N", :L=>"L", :P => "P"}
   end
   
+  def pre_process_fasta_file
+    @name = Time.now.to_s + params[:datafile].original_filename
+    directory = "temp_data"
+    @new_file = File.join(directory,@name)
+    @alignment_name = params[:alignment_name]
+    @seq_type = params[:seq_type]
+    sequences = Sequence.all(:seq_type => @seq_type)
+    @seq_options = Hash.new
+    sequences.map{|k| @seq_options = @seq_options.merge({k.seq_name => k.seq_id.to_s})}
+    File.open(@new_file, "wb"){ |f| f.write(params['datafile'].read)}
+    logger.debug "HELLYEAH"
+    begin
+      file = File.new(@new_file, "r")
+      @fasta_name_arrays = Array.new
+      while (line = file.gets)
+        if line.count(">") > 0
+          @fasta_name_arrays << line.gsub(">", "")
+        end
+      end
+      file.close
+      rescue => err
+          puts "Exception: #{err}"
+          err
+    end
+  end
+  
+  
+  def complete_process_fasta_file
+    directory = "temp_data"
+    @new_file = File.join(directory,params[:datafile_name])
+    begin
+      file = File.new(@new_file, "r")
+      counter = 0
+      order_count = 0
+      abrev_name = ""
+      alignment_sequence = ""
+      fasta_hash = Hash.new
+      (0..params[:seq_num]-1).each do |i|
+        fasta_hash = fasta_hash.merge(params["fasta_name"+i.to_s] => params["seq"+i.to_s])
+      end
+      while (line = file.gets)
+        if line.count(">") > 0 && counter > 0
+          #save the current sequence to an alignment
+          @sequence = Sequence.get(fasta_hash[abrev_name])
+          logger.debug "After"
+          logger.debug { @sequence.to_s}
+          logger.debug "OHNO" 
+          @alignment = Alignment.new(:seq_id => @sequence.seq_id,
+                           :alignment_name => params[:alignment_name],
+                           :align_order => order_count,
+                           :alignment_sequence => alignment_sequence,
+                           :fasta_title => abrev_name)
+          @alignment.valid?
+          logger.debug "VALID"
+          logger.debug { @alignment.errors.inspect }
+          @alignment.save
+          alignment_to_positions(@alignment)              
+          #this is the sequene label
+          abrev_name = line.gsub(">", "")
+
+          order_count += 1
+          alignment_sequence = ""
+        elsif line.count(">") > 0
+          abrev_name = line.gsub(">","")
+          logger.debug { abrev_name }
+          alignment_sequence =""
+        elsif counter > 0
+          alignment_sequence = alignment_sequence + line.lstrip.rstrip
+        end
+        counter = counter + 1
+      end
+      file.close
+      rescue => err
+          puts "Exception: #{err}"
+          err
+    end
+    redirect_to(alignments_path)
+  end
+  
+  
+  
   def process_fasta_file
     name = Time.now.to_s + params[:datafile].original_filename
     directory = "temp_data"
-    @new_file = File.join(directory,name)
+    @new_file = File.join(directory,params[:datafile_name])
     File.open(@new_file, "wb"){ |f| f.write(params['datafile'].read)}
     logger.debug "HELLYEAH"
     begin

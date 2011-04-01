@@ -6,6 +6,7 @@ class Alignment
   property :alignment_name, String, :required => true
   property :align_order, Integer, :required => true
   property :alignment_sequence, Text, :required => true, :default => ""
+  property :fasta_title, Text, :required => false, :default => ""
   # has n, :disorder_values
   # belongs_to :sequence
   

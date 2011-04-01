@@ -54,3 +54,7 @@ div.field, div.actions {
   font-size: 12px;
   list-style: square;
 }
+
+.row1, .row1 td {
+  background-color: gray;
+}
