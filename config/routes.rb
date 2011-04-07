@@ -7,6 +7,8 @@ Disicc::Application.routes.draw do
   resources :alignments do
     member do
       get :display_annotated_alignment
+      get :display_compensatory_annotated_alignment
+      get :display_disorder_annotated_alignment
       get :calculate_intraresidue_consensus
     end
     collection do

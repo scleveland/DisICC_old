@@ -155,29 +155,40 @@ class AlignmentsController < ApplicationController
   def complete_process_fasta_file
     directory = "temp_data"
     @new_file = File.join(directory,params[:datafile_name])
+    logger.debug "BEFORE*************************"
     begin
       file = File.new(@new_file, "r")
+      logger.debug "After FILE OPEN"
       counter = 0
       order_count = 0
       abrev_name = ""
       alignment_sequence = ""
       fasta_hash = Hash.new
-      (0..params[:seq_num]-1).each do |i|
-        fasta_hash = fasta_hash.merge(params["fasta_name"+i.to_s] => params["seq"+i.to_s])
+      logger.debug "BEFORE FASTA HASH*****"
+      logger.debug "BEFORE@1232132131****"
+      range = params[:seq_num].to_i - 1
+      logger.debug "BEFORE FASTA RANGE***********"
+      (0..range).each do |i|
+        logger.debug "BLAH"
+        fasta_hash = fasta_hash.merge(params["fasta_name"+i.to_s].strip => params["seq"+i.to_s])
       end
+      logger.debug {fasta_hash}
+      logger.debug "AFTER FASTA HASH*******"
       while (line = file.gets)
         if line.count(">") > 0 && counter > 0
           #save the current sequence to an alignment
-          @sequence = Sequence.get(fasta_hash[abrev_name])
+          logger.debug {fasta_hash[abrev_name]}
+          @sequence = Sequence.get(fasta_hash[abrev_name.strip])
           logger.debug "After"
-          logger.debug { @sequence.to_s}
-          logger.debug "OHNO" 
+
+          logger.debug "OHNO NONONONONO" 
           @alignment = Alignment.new(:seq_id => @sequence.seq_id,
                            :alignment_name => params[:alignment_name],
                            :align_order => order_count,
                            :alignment_sequence => alignment_sequence,
                            :fasta_title => abrev_name)
-          @alignment.valid?
+           logger.debug "SHAZZZZZAAAAAAAM"                 
+          logger.debug { @alignment.valid?}
           logger.debug "VALID"
           logger.debug { @alignment.errors.inspect }
           @alignment.save
@@ -201,7 +212,7 @@ class AlignmentsController < ApplicationController
           puts "Exception: #{err}"
           err
     end
-    redirect_to(alignments_path)
+    #redirect_to(alignments_path)
   end
   
   
@@ -300,7 +311,86 @@ class AlignmentsController < ApplicationController
    #    puts Sequence.first(:seq_id => alignment.seq_id).abrev_name + ":" + @seq_contact_count
    #  end
   
-  
+   def display_disorder_annotated_alignment
+     @display_array = Array.new
+     @max_count = 0
+     @contact_consensus_array = Array.new
+     @seq_contact_count = 0
+     Alignment.all(:alignment_name => Alignment.get(params[:id]).alignment_name, 
+                                 :order => [:align_order.asc]).each do |alignment|
+       #if AAsequence.all(:seq_id => alignment.seq_id, :contact_consensus.gt => 0.75).count > 0
+         @seq_contact_count += 1
+       #end
+       puts Sequence.first(:seq_id => alignment.seq_id).abrev_name + ":" + AAsequence.all(:seq_id => alignment.seq_id, :contact_consensus.gt => 0.75).count.to_s
+     end
+
+     Alignment.all(:alignment_name => Alignment.get(params[:id]).alignment_name, 
+                                 :order => [:align_order.asc]).each do |alignment|
+     #@alignments = Alignment.all(:alignment_name => params[:aligment_name], 
+                                 #:order => [:align_order.asc]).each do |alignment|
+
+        @display_hash = Hash.new
+        @alignment_color_array = Array.new      
+        @cur_position = 0   
+        AlignmentPosition.all(:alignment_id => alignment.align_id, 
+                     :order => [:alignmnet_position_id.asc]).each do |position|
+         if position.position == @cur_position
+            @amino_acid = AAsequence.first(:AAsequence_id => position.aasequence_id)
+            @alignment_color_array[@cur_position] = residue_color(@amino_acid.disorder_consensus, 0)
+            if @contact_consensus_array[@cur_position].nil?
+              @contact_consensus_array[@cur_position] = 0
+            end
+            if @amino_acid.disorder_consensus > 0.5
+              @contact_consensus_array[@cur_position] = @contact_consensus_array[@cur_position] + 1
+            end
+         else
+            while position.position > @cur_position
+                         @alignment_color_array[@cur_position] = "FFFFFF"
+                         @cur_position += 1
+            end
+            @amino_acid = AAsequence.first(:AAsequence_id => position.aasequence_id)
+            @alignment_color_array[@cur_position] = residue_color(@amino_acid.disorder_consensus, 0)
+            if @contact_consensus_array[@cur_position].nil?
+               @contact_consensus_array[@cur_position] = 0
+             end
+            if @amino_acid.disorder_consensus > 0.5
+               @contact_consensus_array[@cur_position] = @contact_consensus_array[@cur_position] + 1
+            end
+          end
+          @cur_position += 1
+          end                 
+          puts @display_hash["name"] = Sequence.first(:seq_id => alignment.seq_id).abrev_name 
+          @display_hash["alignment"] = @alignment_color_array
+          @display_array << @display_hash
+        if @max_count < @cur_position
+               @max_count = @cur_position
+        end
+     end
+     @cur_position = 0
+     @tick_counter = 0
+     @alignment_tick_array = Array.new
+     while @cur_position <= @max_count
+       @cur_position += 1
+       @tick_counter += 1
+       if @tick_counter != 25
+         @alignment_tick_array << "FFFFFF"
+       else
+         @alignment_tick_array << "000000"
+         @tick_counter = 0
+       end
+     end
+     @display_hash = Hash.new
+     @display_hash["name"] = ""
+     @display_hash["alignment"] = @alignment_tick_array  
+     @display_array << @display_hash
+     if params[:aa_length].nil?
+       @aa_length = 400
+     else
+       @aa_length = params[:aa_length].to_i
+     end
+     @ranges = (@max_count/@aa_length)
+
+   end 
   
   def display_annotated_alignment
     @display_array = Array.new
@@ -345,6 +435,97 @@ class AlignmentsController < ApplicationController
               @contact_consensus_array[@cur_position] = 0
             end
            if @amino_acid.contact_consensus > 0.75
+              @contact_consensus_array[@cur_position] = @contact_consensus_array[@cur_position] + 1
+           end
+         end
+         @cur_position += 1
+         end                 
+         puts @display_hash["name"] = Sequence.first(:seq_id => alignment.seq_id).abrev_name 
+         @display_hash["alignment"] = @alignment_color_array
+         @display_array << @display_hash
+       if @max_count < @cur_position
+              @max_count = @cur_position
+       end
+    end
+    @cur_position = 0
+    @tick_counter = 0
+    @alignment_tick_array = Array.new
+    while @cur_position <= @max_count
+      @cur_position += 1
+      @tick_counter += 1
+      if @tick_counter != 25
+        @alignment_tick_array << "FFFFFF"
+      else
+        @alignment_tick_array << "000000"
+        @tick_counter = 0
+      end
+    end
+    @display_hash = Hash.new
+    @display_hash["name"] = ""
+    @display_hash["alignment"] = @alignment_tick_array  
+    @display_array << @display_hash
+    if params[:aa_length].nil?
+      @aa_length = 400
+    else
+      @aa_length = params[:aa_length].to_i
+    end
+    @ranges = (@max_count/@aa_length)
+    
+  end
+  
+  def display_compensatory_annotated_alignment
+    @display_array = Array.new
+    @max_count = 0
+    @contact_consensus_array = Array.new
+    @seq_contact_count = 0
+    Alignment.all(:alignment_name => Alignment.get(params[:id]).alignment_name, 
+                                :order => [:align_order.asc]).each do |alignment|
+      if AAsequence.all(:seq_id => alignment.seq_id, :contact_consensus.gt => 0.75).count > 0
+        @seq_contact_count += 1
+      end
+      puts Sequence.first(:seq_id => alignment.seq_id).abrev_name + ":" + AAsequence.all(:seq_id => alignment.seq_id, :contact_consensus.gt => 0.75).count.to_s
+    end
+    
+    Alignment.all(:alignment_name => Alignment.get(params[:id]).alignment_name, 
+                                :order => [:align_order.asc]).each do |alignment|
+    #@alignments = Alignment.all(:alignment_name => params[:aligment_name], 
+                                #:order => [:align_order.asc]).each do |alignment|
+
+       @display_hash = Hash.new
+       @alignment_color_array = Array.new      
+       @cur_position = 0   
+       AlignmentPosition.all(:alignment_id => alignment.align_id, 
+                    :order => [:alignmnet_position_id.asc]).each do |position|
+        if position.position == @cur_position
+           @amino_acid = AAsequence.first(:AAsequence_id => position.aasequence_id)
+           @cap_res = Caps.first(:aasequence_id => @amino_acid.AAsequence_id)
+           cap_color =0
+           if !@cap_res.nil?
+             cap_color = 1
+           end
+           @alignment_color_array[@cur_position] = residue_color(@amino_acid.disorder_consensus, cap_color)
+           if @contact_consensus_array[@cur_position].nil?
+             @contact_consensus_array[@cur_position] = 0
+           end
+           if !@cap_res.nil?
+             @contact_consensus_array[@cur_position] = @contact_consensus_array[@cur_position] + 1
+           end
+        else
+           while position.position > @cur_position
+                        @alignment_color_array[@cur_position] = "FFFFFF"
+                        @cur_position += 1
+           end
+           @amino_acid = AAsequence.first(:AAsequence_id => position.aasequence_id)
+           @cap_res = Caps.first(:aasequence_id => @amino_acid.AAsequence_id)
+            cap_color =0
+            if !@cap_res.nil?
+              cap_color = 1
+            end
+           @alignment_color_array[@cur_position] = residue_color(@amino_acid.disorder_consensus, cap_color)
+           if @contact_consensus_array[@cur_position].nil?
+              @contact_consensus_array[@cur_position] = 0
+            end
+           if !@cap_res.nil?
               @contact_consensus_array[@cur_position] = @contact_consensus_array[@cur_position] + 1
            end
          end
