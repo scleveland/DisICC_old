@@ -9,5 +9,7 @@ class AAsequence
   property :contact_consensus, Float, :required => false
   property :contact_positive_consensus, Integer, :required => false
   
-  
+  #belongs_to :sequence, 'Sequence', :parent_key=> [:seq_id], :child_key => [:seq_id]
+  #has n, :disorder, 'Disorder', :parent_key=>[:disorder_id]
+  #has n, :disorder_values, 'DisorderValue', :parent_key => disorder_value_id
 end
