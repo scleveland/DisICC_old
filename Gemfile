@@ -35,6 +35,8 @@ gem 'dm-aggregates',        DM_VERSION
 gem 'dm-timestamps',        DM_VERSION
 gem 'dm-observer',          DM_VERSION
 
+gem 'fastercsv'
+gem 'curb'
 group(:development, :test) do
 
   # Uncomment this if you want to use rspec for testing your application
