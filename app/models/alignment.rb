@@ -70,7 +70,7 @@ class Alignment
   end
   
   def run_xdet
-    self.self.run_align_assess
+    self.run_align_assess
     alignments = Alignment.all(:alignment_name => self.alignment_name)
     alignment.each do |alignment|
       filename= alignment.generate_pid_fasta_file
