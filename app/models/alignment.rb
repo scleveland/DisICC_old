@@ -76,8 +76,11 @@ class Alignment
       filename= alignment.generate_pid_fasta_file
       string = "./lib/comp_apps/XDet/#{filename} Maxhom_McLachlan.metric >> #{filename+"_xdet"}"
       if system(string)
+        puts "hurray"
+      end
     end
   end
+  
   def generate_pid_fasta_files
     self.run_align_assess
     self.sequences.each do |seq|
@@ -99,20 +102,20 @@ class Alignment
   
   #assumes that run_align_asses has already occured
   def generate_pid_fasta_file
-      fasta_string=""
-      seq = Sequence.get(self.seq_id)
-      pids = PercentIdentity.all(:seq1_id => self.seq_id, :percent_id.gte => 20, :order =>[:percent_id.desc])
-      fasta_string= Alignment.first(:alignment_name => self.alignment_name, :seq_id=>self.seq_id).fasta_alignment_string
-      puts seq.abrev_name+":"+pids.count.to_s
-      pids.each do |pid|
-        print Sequence.get(pid.seq2_id).abrev_name + ":" + pid.percent_id.to_s + ","
-        fasta_string = fasta_string + Alignment.first(:alignment_name=>pid.alignment_name, :seq_id=>pid.seq2_id).fasta_alignment_string("pid:#{pid.percent_id}")
-      end
-      filepath = "temp_data/"+self.alignment_name+"_"+seq.abrev_name+"_pid.fasta"
-      f = File.new(filepath, "w+")
-      f.write(fasta_string)
-      f.close
-      filepath
+    fasta_string=""
+    seq = Sequence.get(self.seq_id)
+    pids = PercentIdentity.all(:seq1_id => self.seq_id, :percent_id.gte => 20, :order =>[:percent_id.desc])
+    fasta_string= Alignment.first(:alignment_name => self.alignment_name, :seq_id=>self.seq_id).fasta_alignment_string
+    puts seq.abrev_name+":"+pids.count.to_s
+    pids.each do |pid|
+      print Sequence.get(pid.seq2_id).abrev_name + ":" + pid.percent_id.to_s + ","
+      fasta_string = fasta_string + Alignment.first(:alignment_name=>pid.alignment_name, :seq_id=>pid.seq2_id).fasta_alignment_string("pid:#{pid.percent_id}")
+    end
+    filepath = "temp_data/"+self.alignment_name+"_"+seq.abrev_name+"_pid.fasta"
+    f = File.new(filepath, "w+")
+    f.write(fasta_string)
+    f.close
+    filepath
   end
   
   def update_alignment_sequence
