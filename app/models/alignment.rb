@@ -72,7 +72,7 @@ class Alignment
   def run_xdet
     self.run_align_assess
     alignments = Alignment.all(:alignment_name => self.alignment_name)
-    alignment.each do |alignment|
+    alignments.each do |alignment|
       filename= alignment.generate_pid_fasta_file
       string = "./lib/comp_apps/XDet/#{filename} Maxhom_McLachlan.metric >> #{filename+"_xdet"}"
       if system(string)
