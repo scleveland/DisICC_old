@@ -25,6 +25,12 @@ class Sequence
     return filepath
   end
   
+  def generate_fasta_string
+    fasta_string = ">"+self.abrev_name+"|"+self.seq_name+"|"+self.seq_type+"|"+self.seq_accession+"\n"
+    fasta_string = fasta_string + self.sequence + "\n"
+  end
+  #### DISORDER ####
+  
   def generate_iupred_disorder
     res = `./lib/disorder_apps/iupred/iupred_mac #{self.generate_fasta_file} long`
     filepath = "temp_data/"+self.abrev_name+"_"+self.seq_type+"_iupred.fasta"
@@ -85,6 +91,190 @@ class Sequence
     end
   end
   
+  def calculate_disorder_consensus(disorder_types)
+    AAsequence.all(:seq_id => self.seq_id, :order =>[:original_position]).each do |aa|
+      dis_sum = 0
+      #disorder_types.each do |dis_type|
+          dis_ids = Disorder.all(:disorder_type=>disorder_types, :seq_id=>self.seq_id).map{|k| k.disorder_id}
+          dvs = DisorderValue.all(:aasequence_id => aa.AAsequence_id, :disorder_id=>dis_ids).map{|c| c.dvalue}
+          dis_sum = dvs.sum
+        if disorder_types.include?("DisEMBL Hotloops")
+          dis_sum = dis_sum + 0.38 
+          dis_num = dis_ids.length
+        end
+      #end
+      aa.disorder_consensus = dis_sum/dis_num
+      aa.save
+    end
+  end
+  
+  def self.calculate_disorder_consensus_for_all(ptype, disorder_types)
+    Sequence.all(:seq_type=>ptype).each do |seq|
+      seq.calculate_disorder_consensus(disorder_types)
+    end
+  end
+  
+  def generate_ronn
+     url ="http://www.strubi.ox.ac.uk/RONN"
+     cur = Curl::Easy.new(url)
+     post_params= "sequence=#{'>'+self.abrev_name}\r\n#{self.sequence}&display_probs=y"
+     cur.http_post(post_params)
+     #puts post_params
+     s =cur.body_str.to_s.split('<pre>')
+     a = s[2].split("</pre>")
+     filepath= "temp_data/#{self.abrev_name}_RONN"
+     f = File.new(filepath, "w+")
+     f.write(a[0].to_s)
+     f.close 
+     puts filepath
+     self.store_ronn(filepath)
+   end
+
+   def store_ronn(filepath)
+     #create a new disorder object
+     dis = Disorder.create(:seq_id => self.seq_id, :disorder_type=>"RONN", :version=>1)
+     file = File.new(filepath, 'r')
+     counter = 1
+     aa_count = 0
+     while (line = file.gets)
+       #puts "#{counter}: #{line}"
+       counter = counter + 1
+       if counter > 2
+         line_array = line.split
+         if aa = AAsequence.first(:seq_id => self.seq_id, :original_position=>aa_count)
+         #puts "Amino Acid -"+line_array[1]+ " : " + aa.amino_acid + " | " + aa_count.to_s
+         #if aa.amino_acid == line_array[1]  
+           DisorderValue.create(:disorder_id => dis.disorder_id, :aasequence_id => aa.AAsequence_id, :dvalue=>line_array[1].to_f) 
+         end
+         aa_count +=1
+       end
+     end
+   end
+
+   def self.generate_ronn_for_all(seq_type)
+     self.all(:seq_type => seq_type).each do |seq|
+       begin
+         if Disorder.first(:seq_id=>seq.seq_id, :disorder_type=>"RONN")
+           puts seq.abrev_name + " Already Exists: #{seq.seq_id}"
+         else
+           seq.generate_ronn
+         end
+       rescue
+         puts seq.abrev_name + " Didn't Store: #{seq.seq_id}"
+       end
+     end
+   end
+
+   def generate_pondr_fit
+     url ="http://www.disprot.org/action_predict.php"
+     cur = Curl::Easy.new(url)
+     post_params= "PONDRFIT=yes&native_sequence=#{'>'+self.abrev_name}\r\n#{self.sequence}&fontsize=small&plotwidth=7&xticincrement=100&plotheight=auto&filetype=eps&legend=full"
+     cur.http_post(post_params)
+     puts post_params
+     s =cur.body_str.to_s.split('IUPRED SHORT DATA</a><br><a href=')
+     f = s[1].split(">PONDR-FIT DATA")
+     a = f[0].to_s.gsub('"','')
+     file_url="http://www.disprot.org/" + a
+     file_cur= Curl::Easy.new(file_url)
+     file_cur.http_post()
+     filepath= "temp_data/#{self.abrev_name}_PondrFit"
+     f = File.new(filepath, "w+")
+     f.write(file_cur.body_str)
+     f.close 
+     puts filepath
+     self.store_pondr_fit(filepath)
+   end
+
+   def store_pondr_fit(filepath)
+     #create a new disorder object
+     dis = Disorder.create(:seq_id => self.seq_id, :disorder_type=>"PONDR Fit", :version=>1)
+     file = File.new(filepath, 'r')
+     counter = 1
+     aa_count = 0
+     while (line = file.gets)
+       #puts "#{counter}: #{line}"
+       counter = counter + 1
+         line_array = line.split
+         if aa = AAsequence.first(:seq_id => self.seq_id, :original_position=>aa_count)
+         #puts "Amino Acid -"+line_array[1]+ " : " + aa.amino_acid + " | " + aa_count.to_s
+         #if aa.amino_acid == line_array[1]  
+           DisorderValue.create(:disorder_id => dis.disorder_id, :aasequence_id => aa.AAsequence_id, :dvalue=>line_array[2].to_f) 
+         end
+         aa_count +=1
+     end
+   end
+
+   def self.generate_pondr_fit_for_all(seq_type)
+     self.all(:seq_type => seq_type).each do |seq|
+       begin
+         if Disorder.first(:seq_id=>seq.seq_id, :disorder_type=>"PONDR Fit")
+           puts seq.abrev_name + " Already Exists: #{seq.seq_id}"
+         else
+           seq.generate_pondr_fit
+         end
+       rescue
+         puts seq.abrev_name + " Didn't Store: #{seq.seq_id}"
+       end
+     end
+   end
+
+   def generate_disembl
+     url = "http://dis.embl.de/cgiDict.py"
+     cur = Curl::Easy.new(url)
+     post_params= "key=process&SP_entry=&sequence_string=>#{self.sequence.gsub("\r",'').gsub("\n",'')}&smooth_frame=8&peak_frame=8&join_frame=4&fold_coils=1.20&fold_rem465=1.20&fold_hotloops=1.40&plot_title=&tango_PH=7.40&tango_T=298.15&tango_I=0.02&tango_TFE=0.00&fold_tango=1.00"
+     puts post_params
+     cur.http_post(post_params)
+     s = cur.body_str.to_s.split('<th>Download predictions</th>')
+     f = s[1].split(">smoothed scores</a>")
+     a = f[0].to_s.gsub("\n<td><a href=",'').gsub('"','')
+     file_url = "http://dis.embl.de/" + a
+
+     file_cur= Curl::Easy.new(file_url)
+     file_cur.http_post()
+     filepath= "temp_data/#{self.abrev_name}_Disembl"
+     f = File.new(filepath, "w+")
+     f.write(file_cur.body_str)
+     f.close #this will be the smoothed scores file
+     self.store_disembl(filepath)
+   end
+
+   def store_disembl(filepath)
+     #create a new disorder object
+     dis_hl = Disorder.create(:seq_id => self.seq_id, :disorder_type=>"DisEMBL Hotloops", :version=>1)
+     dis_coil = Disorder.create(:seq_id => self.seq_id, :disorder_type=>"DisEMBL Coils", :version=>1)
+     file = File.new(filepath, 'r')
+     counter = 1
+     aa_count = 0
+     while (line = file.gets)
+       #puts "#{counter}: #{line}"
+       counter = counter + 1
+       if counter > 2
+         line_array = line.split('      ')
+         if aa = AAsequence.first(:seq_id => self.seq_id, :original_position=>aa_count)
+         #puts "Amino Acid -"+line_array[1]+ " : " + aa.amino_acid + " | " + aa_count.to_s
+         #if aa.amino_acid == line_array[1]  
+           DisorderValue.create(:disorder_id => dis_coil.disorder_id, :aasequence_id => aa.AAsequence_id, :dvalue=>line_array[0].to_f) 
+           DisorderValue.create(:disorder_id => dis_hl.disorder_id, :aasequence_id => aa.AAsequence_id, :dvalue=>line_array[1].to_f) 
+         end
+         aa_count +=1
+       end
+     end
+   end
+
+   def self.generate_disembl_for_all(seq_type)
+     self.all(:seq_type => seq_type).each do |seq|
+       begin
+         if Disorder.first(:seq_id=>seq.seq_id, :disorder_type=>["DisEMBL Hotloops","DisEMBL Coils"])
+           puts seq.abrev_name + " Already Exists: #{seq.seq_id}"
+         else
+           seq.generate_disembl
+         end
+       rescue
+         puts seq.abrev_name + " Didn't Store: #{seq.seq_id}"
+       end
+     end
+   end
+  
   # jalview_string = ""
   # low disorder  ffff00        
   # avg disorder  ffcc00        
@@ -92,6 +282,9 @@ class Sequence
   # highly disordered ff6600        
   # extremely disordered  ff0000        
   # no disorder 0
+  
+  
+  ### Jalview ANNOTATIONS
   
   def self.generate_all_sequence_javliew_annotation_iupred(ptype)
     require 'csv'
@@ -133,28 +326,7 @@ class Sequence
     end
   end
   
-  def calculate_disorder_consensus(disorder_types)
-    AAsequence.all(:seq_id => self.seq_id, :order =>[:original_position]).each do |aa|
-      dis_sum = 0
-      #disorder_types.each do |dis_type|
-          dis_ids = Disorder.all(:disorder_type=>disorder_types, :seq_id=>self.seq_id).map{|k| k.disorder_id}
-          dvs = DisorderValue.all(:aasequence_id => aa.AAsequence_id, :disorder_id=>dis_ids).map{|c| c.dvalue}
-          dis_sum = dvs.sum
-        if disorder_types.include?("DisEMBL Hotloops")
-          dis_sum = dis_sum + 0.38 
-          dis_num = dis_ids.length
-        end
-      #end
-      aa.disorder_consensus = dis_sum/dis_num
-      aa.save
-    end
-  end
   
-  def self.calculate_disorder_consensus_for_all(ptype, disorder_types)
-    Sequence.all(:seq_type=>ptype).each do |seq|
-      seq.calculate_disorder_consensus(disorder_types)
-    end
-  end
   
   def self.generate_all_sequence_javliew_annotation(ptype,disorder_type)
     require 'csv'
@@ -277,165 +449,6 @@ class Sequence
    return jalview_string
   end
   
-  def generate_ronn
-    url ="http://www.strubi.ox.ac.uk/RONN"
-    cur = Curl::Easy.new(url)
-    post_params= "sequence=#{'>'+self.abrev_name}\r\n#{self.sequence}&display_probs=y"
-    cur.http_post(post_params)
-    #puts post_params
-    s =cur.body_str.to_s.split('<pre>')
-    a = s[2].split("</pre>")
-    filepath= "temp_data/#{self.abrev_name}_RONN"
-    f = File.new(filepath, "w+")
-    f.write(a[0].to_s)
-    f.close 
-    puts filepath
-    self.store_ronn(filepath)
-  end
-  
-  def store_ronn(filepath)
-    #create a new disorder object
-    dis = Disorder.create(:seq_id => self.seq_id, :disorder_type=>"RONN", :version=>1)
-    file = File.new(filepath, 'r')
-    counter = 1
-    aa_count = 0
-    while (line = file.gets)
-      #puts "#{counter}: #{line}"
-      counter = counter + 1
-      if counter > 2
-        line_array = line.split
-        if aa = AAsequence.first(:seq_id => self.seq_id, :original_position=>aa_count)
-        #puts "Amino Acid -"+line_array[1]+ " : " + aa.amino_acid + " | " + aa_count.to_s
-        #if aa.amino_acid == line_array[1]  
-          DisorderValue.create(:disorder_id => dis.disorder_id, :aasequence_id => aa.AAsequence_id, :dvalue=>line_array[1].to_f) 
-        end
-        aa_count +=1
-      end
-    end
-  end
-  
-  def self.generate_ronn_for_all(seq_type)
-    self.all(:seq_type => seq_type).each do |seq|
-      begin
-        if Disorder.first(:seq_id=>seq.seq_id, :disorder_type=>"RONN")
-          puts seq.abrev_name + " Already Exists: #{seq.seq_id}"
-        else
-          seq.generate_ronn
-        end
-      rescue
-        puts seq.abrev_name + " Didn't Store: #{seq.seq_id}"
-      end
-    end
-  end
-  
-  def generate_pondr_fit
-    url ="http://www.disprot.org/action_predict.php"
-    cur = Curl::Easy.new(url)
-    post_params= "PONDRFIT=yes&native_sequence=#{'>'+self.abrev_name}\r\n#{self.sequence}&fontsize=small&plotwidth=7&xticincrement=100&plotheight=auto&filetype=eps&legend=full"
-    cur.http_post(post_params)
-    puts post_params
-    s =cur.body_str.to_s.split('IUPRED SHORT DATA</a><br><a href=')
-    f = s[1].split(">PONDR-FIT DATA")
-    a = f[0].to_s.gsub('"','')
-    file_url="http://www.disprot.org/" + a
-    file_cur= Curl::Easy.new(file_url)
-    file_cur.http_post()
-    filepath= "temp_data/#{self.abrev_name}_PondrFit"
-    f = File.new(filepath, "w+")
-    f.write(file_cur.body_str)
-    f.close 
-    puts filepath
-    self.store_pondr_fit(filepath)
-  end
-  
-  def store_pondr_fit(filepath)
-    #create a new disorder object
-    dis = Disorder.create(:seq_id => self.seq_id, :disorder_type=>"PONDR Fit", :version=>1)
-    file = File.new(filepath, 'r')
-    counter = 1
-    aa_count = 0
-    while (line = file.gets)
-      #puts "#{counter}: #{line}"
-      counter = counter + 1
-        line_array = line.split
-        if aa = AAsequence.first(:seq_id => self.seq_id, :original_position=>aa_count)
-        #puts "Amino Acid -"+line_array[1]+ " : " + aa.amino_acid + " | " + aa_count.to_s
-        #if aa.amino_acid == line_array[1]  
-          DisorderValue.create(:disorder_id => dis.disorder_id, :aasequence_id => aa.AAsequence_id, :dvalue=>line_array[2].to_f) 
-        end
-        aa_count +=1
-    end
-  end
-  
-  def self.generate_pondr_fit_for_all(seq_type)
-    self.all(:seq_type => seq_type).each do |seq|
-      begin
-        if Disorder.first(:seq_id=>seq.seq_id, :disorder_type=>"PONDR Fit")
-          puts seq.abrev_name + " Already Exists: #{seq.seq_id}"
-        else
-          seq.generate_pondr_fit
-        end
-      rescue
-        puts seq.abrev_name + " Didn't Store: #{seq.seq_id}"
-      end
-    end
-  end
-  
-  def generate_disembl
-    url = "http://dis.embl.de/cgiDict.py"
-    cur = Curl::Easy.new(url)
-    post_params= "key=process&SP_entry=&sequence_string=>#{self.sequence.gsub("\r",'').gsub("\n",'')}&smooth_frame=8&peak_frame=8&join_frame=4&fold_coils=1.20&fold_rem465=1.20&fold_hotloops=1.40&plot_title=&tango_PH=7.40&tango_T=298.15&tango_I=0.02&tango_TFE=0.00&fold_tango=1.00"
-    puts post_params
-    cur.http_post(post_params)
-    s = cur.body_str.to_s.split('<th>Download predictions</th>')
-    f = s[1].split(">smoothed scores</a>")
-    a = f[0].to_s.gsub("\n<td><a href=",'').gsub('"','')
-    file_url = "http://dis.embl.de/" + a
-    
-    file_cur= Curl::Easy.new(file_url)
-    file_cur.http_post()
-    filepath= "temp_data/#{self.abrev_name}_Disembl"
-    f = File.new(filepath, "w+")
-    f.write(file_cur.body_str)
-    f.close #this will be the smoothed scores file
-    self.store_disembl(filepath)
-  end
-  
-  def store_disembl(filepath)
-    #create a new disorder object
-    dis_hl = Disorder.create(:seq_id => self.seq_id, :disorder_type=>"DisEMBL Hotloops", :version=>1)
-    dis_coil = Disorder.create(:seq_id => self.seq_id, :disorder_type=>"DisEMBL Coils", :version=>1)
-    file = File.new(filepath, 'r')
-    counter = 1
-    aa_count = 0
-    while (line = file.gets)
-      #puts "#{counter}: #{line}"
-      counter = counter + 1
-      if counter > 2
-        line_array = line.split('      ')
-        if aa = AAsequence.first(:seq_id => self.seq_id, :original_position=>aa_count)
-        #puts "Amino Acid -"+line_array[1]+ " : " + aa.amino_acid + " | " + aa_count.to_s
-        #if aa.amino_acid == line_array[1]  
-          DisorderValue.create(:disorder_id => dis_coil.disorder_id, :aasequence_id => aa.AAsequence_id, :dvalue=>line_array[0].to_f) 
-          DisorderValue.create(:disorder_id => dis_hl.disorder_id, :aasequence_id => aa.AAsequence_id, :dvalue=>line_array[1].to_f) 
-        end
-        aa_count +=1
-      end
-    end
-  end
-  
-  def self.generate_disembl_for_all(seq_type)
-    self.all(:seq_type => seq_type).each do |seq|
-      begin
-        if Disorder.first(:seq_id=>seq.seq_id, :disorder_type=>["DisEMBL Hotloops","DisEMBL Coils"])
-          puts seq.abrev_name + " Already Exists: #{seq.seq_id}"
-        else
-          seq.generate_disembl
-        end
-      rescue
-        puts seq.abrev_name + " Didn't Store: #{seq.seq_id}"
-      end
-    end
-  end
+ 
 end
 

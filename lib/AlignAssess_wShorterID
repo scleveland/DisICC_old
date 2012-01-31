@@ -10,31 +10,33 @@ print "\n";
 # determine users requirements
 ###################################################################
 # asking for the input file
-print "For this program to run, the file to be processed must be in the current working directory:\n";
-system pwd;
-print "\n";
+#print "For this program to run, the file to be processed must be in the current working #directory:\n";
+#system pwd;
+#print "\n";
 
-print "\nPlease enter the name of the alignment file to process:\n";
-$infile = <STDIN>;
+#print "\nPlease enter the name of the alignment file to process:\n";
+$infile = $ARGV[0];#<STDIN>;
 chomp $infile;
 # checking to see if the file exists
 until (-f $infile)
 
 { # the -f bit means check if there is a file called ...
-        print "Sorry, that file does not appear to exist, please try again.\n";
-        $infile = <STDIN>;
-        chomp $infile;
+        die "Sorry, that file does not appear to exist, please try again.\n";
+        #print "Sorry, that file does not appear to exist, please try again.\n";
+        #$infile = <STDIN>;
+        #chomp $infile;
 }
 open (INFILE, $infile) || die "Sorry, system can't open $infile for reading";
 
-print "\nPlease enter P to assess a protein alignment or N to assess a nucleotide alignment:\n";
-$seq_type = <STDIN>;
+#print "\nPlease enter P to assess a protein alignment or N to assess a nucleotide alignment:\n";
+$seq_type = $ARGV[1];#<STDIN>;
 chomp($seq_type);
 until ($seq_type eq 'P' || $seq_type eq 'p' || $seq_type eq 'N' || $seq_type eq 'n')
 {
-   print "Sorry, that is not a valid option, please try again.\n";
-   $seq_type = <STDIN>;
-   chomp($seq_type);
+   die "Sorry, that is not a valid option, please try again.\n";
+   #print "Sorry, that is not a valid option, please try again.\n";
+   #$seq_type = <STDIN>;
+   #chomp($seq_type);
 }
 
 
