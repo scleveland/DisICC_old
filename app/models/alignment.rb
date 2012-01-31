@@ -74,7 +74,7 @@ class Alignment
     alignments = Alignment.all(:alignment_name => self.alignment_name)
     alignments.each do |alignment|
       filename= alignment.generate_pid_fasta_file
-      string = "./lib/comp_apps/XDet/xdet_linux32 ../../../#{filename} ~/Rails/DisICC/lib/comp_apps/XDet/Maxhom_McLachlan.metric >> #{filename}_xdet"
+      string = "./lib/comp_apps/XDet/xdet_linux32 ~/Rails/DisICC/l#{filename} ~/Rails/DisICC/lib/comp_apps/XDet/Maxhom_McLachlan.metric >> #{filename}_xdet"
       if system(string)
         puts "hurray"
       end
