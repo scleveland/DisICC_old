@@ -69,6 +69,16 @@ class Alignment
     end
   end
   
+  def run_caps
+    self.run_align_assess
+    Dir.mkdir("temp_data/#{self.alignment_name}") unless File.directory?("temp_data/#{self.alignment_name}")
+    alignments = Alignment.all(:alignment_name => self.alignment_name)
+    alignments.each do |alignment|
+      alignment.generate_pid_fasta_file("temp_data/#{self.alignment_name}")
+    end
+    system "./lib/comp_apps/caps/caps -F temp_data/#{self.alignment_name} --intra"
+  end
+  
   def run_xdet
     self.run_align_assess
     alignments = Alignment.all(:alignment_name => self.alignment_name)
@@ -101,7 +111,7 @@ class Alignment
   end
   
   #assumes that run_align_asses has already occured
-  def generate_pid_fasta_file
+  def generate_pid_fasta_file(dir="temp_data")
     fasta_string=""
     seq = Sequence.get(self.seq_id)
     pids = PercentIdentity.all(:seq1_id => self.seq_id, :percent_id.gte => 20, :order =>[:percent_id.desc])
@@ -111,7 +121,7 @@ class Alignment
       print Sequence.get(pid.seq2_id).abrev_name + ":" + pid.percent_id.to_s + ","
       fasta_string = fasta_string + Alignment.first(:alignment_name=>pid.alignment_name, :seq_id=>pid.seq2_id).fasta_alignment_string("pid:#{pid.percent_id}")
     end
-    filepath = "temp_data/"+self.alignment_name+"_"+seq.abrev_name+"_pid.fasta"
+    filepath = "#{dir}/"+self.alignment_name+"_"+seq.abrev_name+"_pid.fasta"
     f = File.new(filepath, "w+")
     f.write(fasta_string)
     f.close
