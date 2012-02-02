@@ -118,8 +118,10 @@ class Alignment
     fasta_string= Alignment.first(:alignment_name => self.alignment_name, :seq_id=>self.seq_id).fasta_alignment_string
     puts seq.abrev_name+":"+pids.count.to_s
     pids.each do |pid|
-      print Sequence.get(pid.seq2_id).abrev_name + ":" + pid.percent_id.to_s + ","
-      fasta_string = fasta_string + Alignment.first(:alignment_name=>pid.alignment_name, :seq_id=>pid.seq2_id).fasta_alignment_string("pid:#{pid.percent_id}")
+      if pid.seq2_id != seq.seq_id
+        print Sequence.get(pid.seq2_id).abrev_name + ":" + pid.percent_id.to_s + ","
+        fasta_string = fasta_string + Alignment.first(:alignment_name=>pid.alignment_name, :seq_id=>pid.seq2_id).fasta_alignment_string("pid:#{pid.percent_id}")
+      end
     end
     filepath = "#{dir}/"+self.alignment_name+"_"+seq.abrev_name+"_pid.fasta"
     f = File.new(filepath, "w+")
