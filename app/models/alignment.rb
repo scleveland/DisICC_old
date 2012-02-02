@@ -89,6 +89,16 @@ class Alignment
     end
   end
   
+  def run_rate4site
+    self.run_align_assess
+    Dir.mkdir("temp_data/#{self.alignment_name}") unless File.directory?("temp_data/#{self.alignment_name}")
+    alignments = Alignment.all(:alignment_name => self.alignment_name)
+    alignments.each do |alignment|
+      filename= alignment.generate_pid_fasta_file("temp_data/#{self.alignment_name}")
+      system "./lib/comp_apps/conseq/rate4site_fast -s #{filename} -o #{filename}_conseq"
+    end
+  end
+  
   def generate_pid_fasta_files
     self.run_align_assess
     self.sequences.each do |seq|
