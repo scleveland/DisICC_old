@@ -81,13 +81,11 @@ class Alignment
   
   def run_xdet
     self.run_align_assess
+    Dir.mkdir("temp_data/#{self.alignment_name}") unless File.directory?("temp_data/#{self.alignment_name}")
     alignments = Alignment.all(:alignment_name => self.alignment_name)
     alignments.each do |alignment|
-      filename= alignment.generate_pid_fasta_file
-      string = "./lib/comp_apps/XDet/xdet_linux32 ~/Rails/DisICC/#{filename} ~/Rails/DisICC/lib/comp_apps/XDet/Maxhom_McLachlan.metric >> #{filename}_xdet"
-      if system(string)
-        puts "hurray"
-      end
+      filename= alignment.generate_pid_fasta_file("temp_data/#{self.alignment_name}")
+      system "./lib/comp_apps/XDet/xdet_linux32 #{filename} ~/Rails/DisICC/lib/comp_apps/XDet/Maxhom_McLachlan.metric >> #{filename}_xdet"
     end
   end
   
@@ -99,8 +97,10 @@ class Alignment
       fasta_string= Alignment.first(:alignment_name => self.alignment_name, :seq_id=>seq.seq_id).fasta_alignment_string
       puts seq.abrev_name+":"+pids.count.to_s
       pids.each do |pid|
-        print Sequence.get(pid.seq2_id).abrev_name + ":" + pid.percent_id.to_s + ","
-        fasta_string = fasta_string + Alignment.first(:alignment_name=>pid.alignment_name, :seq_id=>pid.seq2_id).fasta_alignment_string("pid:#{pid.percent_id}")
+        if pid.seq2_id != seq.seq_id
+          print Sequence.get(pid.seq2_id).abrev_name + ":" + pid.percent_id.to_s + ","
+          fasta_string = fasta_string + Alignment.first(:alignment_name=>pid.alignment_name, :seq_id=>pid.seq2_id).fasta_alignment_string("pid:#{pid.percent_id}")
+        end
       end
       filepath = "temp_data/"+self.alignment_name+"_"+seq.abrev_name+"_pid.fasta"
       f = File.new(filepath, "w+")
